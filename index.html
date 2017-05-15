@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UIColor to HEX</title>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="lib/html5shiv/js/html5shiv.min.js"></script>
+      <script src="lib/respond/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="lib/jquery/js/jquery-3.2.1.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
+
+    <script>
+        (function () {
+
+            var ConvertBase = function (num) {
+                return {
+                    from: function (baseFrom) {
+                        return {
+                            to: function (baseTo) {
+                                return parseInt(num, baseFrom).toString(baseTo);
+                            }
+                        };
+                    }
+                };
+            };
+
+            // binary to decimal
+            ConvertBase.bin2dec = function (num) {
+                return ConvertBase(num).from(2).to(10);
+            };
+
+            // binary to hexadecimal
+            ConvertBase.bin2hex = function (num) {
+                return ConvertBase(num).from(2).to(16);
+            };
+
+            // decimal to binary
+            ConvertBase.dec2bin = function (num) {
+                return ConvertBase(num).from(10).to(2);
+            };
+
+            // decimal to hexadecimal
+            ConvertBase.dec2hex = function (num) {
+                return ConvertBase(num).from(10).to(16);
+            };
+
+            // hexadecimal to binary
+            ConvertBase.hex2bin = function (num) {
+                return ConvertBase(num).from(16).to(2);
+            };
+
+            // hexadecimal to decimal
+            ConvertBase.hex2dec = function (num) {
+                return ConvertBase(num).from(16).to(10);
+            };
+
+            this.ConvertBase = ConvertBase;
+
+        })(this);
+
+        function converter() {
+            var NOT_FOUND = -1;
+
+            var originalText = document.getElementById('originalText').value;
+            var patternText = document.getElementById('patternText').value;
+            var convertResultEl = document.getElementById('convertResult');
+            var originalTextParts = originalText.split(' ');
+
+            var redValue = '';
+            var greenValue = '';
+            var blueValue = '';
+            var alphaValue = 'FF';
+
+            for (var x = 0; x < originalTextParts.length; x++) {
+                var part = originalTextParts[x];
+                part = part.toLowerCase();
+
+                if (part.indexOf('red') != NOT_FOUND) {
+                    redValue = getHexForFloat(part);
+                    //console.log('Red found!');
+                } else if (part.indexOf('green') != NOT_FOUND) {
+                    greenValue = getHexForFloat(part);
+                    //console.log('Green found!');
+                } else if (part.indexOf('blue') != NOT_FOUND) {
+                    blueValue = getHexForFloat(part);
+                    //console.log('Blue found!');
+                } else if (part.indexOf('alpha') != NOT_FOUND) {
+                    alphaValue = getHexForFloat(part);
+                    //console.log('Alpha found!');
+                }
+            }
+
+            //console.log(originalTextParts);
+            var resultText = (alphaValue + redValue + greenValue + blueValue);
+            resultText = patternText.replace('[result]', resultText);
+
+            convertResultEl.innerText = resultText;
+        }
+
+        function getHexForFloat(floatTextValue) {
+            floatTextValue = floatTextValue.replace('/255.0f', '');
+            floatTextValue = floatTextValue.replace(/[^\d.-]/g, '');
+
+            var floatValue = parseFloat(floatTextValue);
+
+            if (floatValue < 10) {
+                floatValue = floatValue * 255.0;
+            }
+
+            //console.log(floatValue);
+
+            floatTextValue = ConvertBase.dec2hex(floatValue);
+
+            return floatTextValue;
+        }
+
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Converter</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="starter-template">
+            <p><strong>Type the ObjectiveC code:</strong></p>
+            <input id="originalText" type="text" value="[UIColor colorWithRed:43.0f/255.0f green:43.0f/255.0f blue:43.0f/255.0f alpha:0.3]" style="height: 40px; font-size: 14px; width: 100%; text-align: center;" onclick="this.setSelectionRange(0, this.value.length)" />
+            <br />
+            <br />
+            <br />
+            <p><strong>Type the pattern:</strong></p>
+            <input id="patternText" type="text" value="[result]" style="height: 40px; font-size: 14px; width: 100%; text-align: center;" />
+            <br />
+            <br />
+            <div id="convertResult" style="padding: 20px; font-size: 18px; width: 100%; text-align: center;">Click on "convert" button!</div>
+            <br />
+            <button onclick="converter()" class="btn btn-success">Convert</button>
+            <br />
+            <br />
+        </div>
+
+    </div>
+</body>
+
+</html>

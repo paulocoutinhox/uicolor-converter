@@ -1,0 +1,33 @@
+body {
+  padding-top: 50px;
+	background-color: #fff;
+	color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #333;
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.navbar-inverse {
+	background-color: #2196f3;
+}
+
+.navbar-inverse a.navbar-brand {
+	color: #fff;
+}
+
+.navbar-inverse a.navbar-brand:hover {
+	color: #bbb;
+}
+
+*:focus {
+	outline: none;
+	border-color: inherit;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
