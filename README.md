@@ -1,4 +1,4 @@
-# UIColor Converter
+# UIColor Converter to Hex
 
 Example:  
 
