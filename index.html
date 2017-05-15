@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UIColor to HEX</title>
+    <title>UIColor Converter to Hex</title>
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 
@@ -22,7 +22,7 @@
     <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
 
     <script>
-        var debug = false;
+        var debug = true;
 
         (function () {
 
@@ -72,7 +72,7 @@
 
         })(this);
 
-        function converter() {
+        function convert() {
             var NOT_FOUND = -1;
 
             var originalText = document.getElementById('originalText').value;
@@ -80,43 +80,59 @@
             var convertResultEl = document.getElementById('convertResult');
             var originalTextParts = originalText.split(' ');
 
-            var redValue = '';
-            var greenValue = '';
-            var blueValue = '';
+            var redValue = 'FF';
+            var greenValue = 'FF';
+            var blueValue = 'FF';
             var alphaValue = 'FF';
 
-            for (var x = 0; x < originalTextParts.length; x++) {
-                var part = originalTextParts[x];
-                part = part.toLowerCase();
+            // red color
+            var regexp = /red:([\s+]?\d+[\.]?[\d+]?)/gi;
+            var match = regexp.exec(originalText);
 
-                if (part.indexOf('red') != NOT_FOUND) {
-                    redValue = getHexForFloat(part);
-
-                    if (debug) {
-                        console.log('Red found!');
-                    }
-                } else if (part.indexOf('green') != NOT_FOUND) {
-                    greenValue = getHexForFloat(part);
-
-                    if (debug) {
-                        console.log('Green found!');
-                    }
-                } else if (part.indexOf('blue') != NOT_FOUND) {
-                    blueValue = getHexForFloat(part);
-
-                    if (debug) {
-                        console.log('Blue found!');
-                    }
-                } else if (part.indexOf('alpha') != NOT_FOUND) {
-                    alphaValue = getHexForFloat(part);
-
-                    if (debug) {
-                        console.log('Alpha found!');
-                    }
+            if (match != null) {
+                if (debug) {
+                    console.log('Red found!');
                 }
+
+                redValue = getHexForFloat(match[0]);
             }
 
-            //console.log(originalTextParts);
+            // green color
+            var regexp = /green:([\s+]?\d+[\.]?[\d+]?)/gi;
+            var match = regexp.exec(originalText);
+
+            if (match != null) {
+                if (debug) {
+                    console.log('Green found!');
+                }
+
+                greenValue = getHexForFloat(match[0]);
+            }
+
+            // blue color
+            var regexp = /blue:([\s+]?\d+[\.]?[\d+]?)/gi;
+            var match = regexp.exec(originalText);
+
+            if (match != null) {
+                if (debug) {
+                    console.log('Blue found!');
+                }
+
+                blueValue = getHexForFloat(match[0]);
+            }
+
+            // alpha color
+            var regexp = /alpha:([\s+]?\d+[\.]?[\d+]?)/gi;
+            var match = regexp.exec(originalText);
+
+            if (match != null) {
+                if (debug) {
+                    console.log('Alpha found!');
+                }
+
+                alphaValue = getHexForFloat(match[0]);
+            }
+
             var resultText = (alphaValue + redValue + greenValue + blueValue);
             resultText = patternText.replace('[result]', resultText);
 
@@ -124,8 +140,15 @@
         }
 
         function getHexForFloat(floatTextValue) {
-            floatTextValue = floatTextValue.replace('/255.0f', '');
+            if (debug) {
+                console.log('getHexForFloat: ' + floatTextValue);
+            }
+
             floatTextValue = floatTextValue.replace(/[^\d.-]/g, '');
+
+            if (debug) {
+                console.log(floatTextValue);
+            }
 
             var floatValue = parseFloat(floatTextValue);
 
@@ -170,7 +193,7 @@
             <br />
             <div id="convertResult" style="padding: 20px; font-size: 18px; width: 100%; text-align: center;">Click on "convert" button!</div>
             <br />
-            <button onclick="converter()" class="btn btn-success">Convert</button>
+            <button onclick="convert()" class="btn btn-success">Convert</button>
             <br />
             <br />
         </div>
