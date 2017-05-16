@@ -22,7 +22,7 @@
     <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
 
     <script>
-        var debug = false;
+        var debug = true;
 
         (function () {
 
@@ -161,6 +161,10 @@
             }
 
             floatTextValue = ConvertBase.dec2hex(floatValue);
+
+            if (floatTextValue.length == 1) {
+                floatTextValue = floatTextValue + floatTextValue;
+            }
 
             return floatTextValue;
         }
