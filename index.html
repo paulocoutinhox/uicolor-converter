@@ -22,7 +22,7 @@
     <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
 
     <script>
-        var debug = true;
+        var debug = false;
 
         (function () {
 
@@ -86,7 +86,7 @@
             var alphaValue = 'FF';
 
             // red color
-            var regexp = /red:([\s+]?\d+[\.]?[\d+]?)/gi;
+            var regexp = /red[\(]?[:]?([\s+]?\d+[\.]?[\d+]?)/gi;
             var match = regexp.exec(originalText);
 
             if (match != null) {
@@ -98,7 +98,7 @@
             }
 
             // green color
-            var regexp = /green:([\s+]?\d+[\.]?[\d+]?)/gi;
+            var regexp = /green[\(]?[:]?([\s+]?\d+[\.]?[\d+]?)/gi;
             var match = regexp.exec(originalText);
 
             if (match != null) {
@@ -110,7 +110,7 @@
             }
 
             // blue color
-            var regexp = /blue:([\s+]?\d+[\.]?[\d+]?)/gi;
+            var regexp = /blue[\(]?[:]?([\s+]?\d+[\.]?[\d+]?)/gi;
             var match = regexp.exec(originalText);
 
             if (match != null) {
@@ -122,7 +122,7 @@
             }
 
             // alpha color
-            var regexp = /alpha:([\s+]?\d+[\.]?[\d+]?)/gi;
+            var regexp = /alpha[\(]?[:]?([\s+]?\d+[\.]?[\d+]?)/gi;
             var match = regexp.exec(originalText);
 
             if (match != null) {
@@ -134,9 +134,12 @@
             }
 
             var resultText = (alphaValue + redValue + greenValue + blueValue);
+            var htmlColor = (redValue + greenValue + blueValue);
             resultText = patternText.replace('[result]', resultText);
 
             convertResultEl.innerText = resultText;
+
+            document.getElementById('convertResultColor').style.backgroundColor = '#' + htmlColor;
         }
 
         function getHexForFloat(floatTextValue) {
@@ -166,7 +169,7 @@
                 floatTextValue = floatTextValue + floatTextValue;
             }
 
-            return floatTextValue;
+            return floatTextValue.toUpperCase();
         }
     </script>
 </head>
@@ -183,19 +186,20 @@
     <div class="container">
 
         <div class="starter-template">
-            <p><strong>Type the ObjectiveC code:</strong></p>
+            <p><strong>Type the code (swift or objc):</strong></p>
             <input id="originalText" type="text" value="[UIColor colorWithRed:43.0f/255.0f green:43.0f/255.0f blue:43.0f/255.0f alpha:0.3]"
                 style="height: 40px; font-size: 14px; width: 100%; text-align: center;" onclick="this.setSelectionRange(0, this.value.length)"
             />
             <br />
             <br />
             <br />
-            <p><strong>Type the pattern:</strong></p>
+            <p><strong>Type the pattern for result:</strong></p>
             <input id="patternText" type="text" value="[result]" style="height: 40px; font-size: 14px; width: 100%; text-align: center;"
             />
             <br />
             <br />
             <div id="convertResult" style="padding: 20px; font-size: 18px; width: 100%; text-align: center;">Click on "convert" button!</div>
+            <div id="convertResultColor" style="padding: 10px; width: 40px; height: 40px; border: 1px solid #000; margin: 0 auto;">&nbsp;</div>
             <br />
             <button onclick="convert()" class="btn btn-success">Convert</button>
             <br />
